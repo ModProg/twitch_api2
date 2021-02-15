@@ -183,3 +183,15 @@ impl<'a, C: HttpClient<'a>> TwitchClient<'a, C> {
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+use http_types::convert::DeserializeOwned;
+    use serde::Serialize;
+
+    use super::*;
+    #[track_caller]
+    pub fn roundtrip_rmp<T: serde::de::DeserializeOwned + serde::Serialize>(val: &T) {
+        rmp_serde::from_slice(&rmp_serde::to_vec(val).expect("could not make into rmp bytes")).expect("could not convert back")
+    }
+}
